@@ -1,0 +1,77 @@
+<div class="container">
+    <div id="board" class="board"></div>
+</div>
+
+<script>
+const query = (q) => {
+    return document.querySelectorAll(q)
+}
+
+const ws = new WebSocket(`ws://localhost:8080/ws`)
+
+const board = query("#board")[0]
+let can_move = false
+
+board.addEventListener("mousedown", (e) => {
+    can_move = true
+})
+
+let bx = -1
+let by = -1
+board.addEventListener("mousemove", (e) => {
+    if (can_move) {
+        e.target.style.width = e.target.clientWidth
+        e.target.style.height = e.target.clientHeight
+
+        let width = Number(e.target.style.width.replace("px", ""))
+        let height = Number(e.target.style.height.replace("px", ""))
+        if (bx === -1 || by === -1) {
+            bx = e.clientX
+            by = e.clientY
+        } else {
+            width += e.clientX - bx
+            bx = e.clientX
+
+            height += e.clientY - by
+            by = e.clientY
+
+            e.target.style.width = `${width}px`
+            e.target.style.height = `${height}px`
+
+            const message = {
+                width: width,
+                height: height,
+            }
+
+            ws.send(JSON.stringify(message))
+        }
+    }
+})
+
+ws.onmessage = (e) => {
+    const { data } = e
+    const d = JSON.parse(data)
+
+    board.style.width = d.width
+    board.style.height = d.height
+}
+
+board.addEventListener("mouseup", (e) => {
+    console.log("up", e)
+    can_move = false
+})
+
+</script>
+
+<style>
+.container {
+    background-color: whitesmoke;
+    height: 100%;
+}
+
+.board {
+    height: 30px;
+    width: 30px;
+    background-color: tomato;
+}
+</style>
