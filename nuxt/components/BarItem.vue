@@ -1,16 +1,5 @@
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-</head>
-
-<body>
-<div id="container">
-    <gantt-bar v-for="i in 3" style="margin-bottom: 10px"/>
-</div>
-
-<script>
-const gantt_bar = {
-    template: `
-    <div class="bar"
+<template>
+<div class="bar"
     :style="{ 'margin-left': margin_left + 'px' }"
     @mousemove="mouse_move"
     >
@@ -28,7 +17,10 @@ const gantt_bar = {
             @mouseup="mouse_up($event, 'right')"
         ></div>
     </div>
-    `,
+</template>
+
+<script>
+export default {
     data() {
         return {
             can_move: false,
@@ -70,23 +62,9 @@ const gantt_bar = {
         }
     }
 }
-
-const v = new Vue({
-    el: "#container",
-    components: {
-        "GanttBar": gantt_bar,
-    },
-})
-
-// const ws = new WebSocket(`ws://localhost:8080/ws`)
 </script>
 
 <style>
-#container {
-    background-color: whitesmoke;
-    height: 100%;
-}
-
 .bar {
     height: 30px;
     font-size: 0;
@@ -112,7 +90,4 @@ const v = new Vue({
 .mouse-left {
     cursor: w-resize	;
 }
-
 </style>
-
-</body>
