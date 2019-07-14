@@ -1,1 +1,1 @@
-watchexec -e go -r go run main.go
+watchexec -e go -r go run *.go
