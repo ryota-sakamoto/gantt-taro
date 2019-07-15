@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/jmoiron/sqlx"
 	"github.com/ryota-sakamoto/gantt-taro/models"
 )
 
@@ -9,13 +10,20 @@ type TaskRepository interface {
 	Save(*models.Task) error
 }
 
-type TaskRepositoryImpl struct {
+func NewTaskRepository(db *sqlx.DB) TaskRepository {
+	return taskRepositoryImpl{
+		db: db,
+	}
 }
 
-func (TaskRepositoryImpl) Get(id int) (*models.Task, error) {
+type taskRepositoryImpl struct {
+	db *sqlx.DB
+}
+
+func (t taskRepositoryImpl) Get(id int) (*models.Task, error) {
 	return &models.Task{}, nil
 }
 
-func (TaskRepositoryImpl) Save(task *models.Task) error {
+func (taskRepositoryImpl) Save(task *models.Task) error {
 	return nil
 }
