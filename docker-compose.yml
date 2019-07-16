@@ -2,10 +2,11 @@ version: "3"
 
 services:
   api:
-    build: .
+    build:
+      context: ./gantt-taro-api
     tty: true
     volumes:
-      - .:/src
+      - ./gantt-taro-api:/src
     ports:
       - 8080:8080
 
@@ -15,4 +16,4 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: root
     ports:
-      - "3306:3306"
+      - 3306:3306
