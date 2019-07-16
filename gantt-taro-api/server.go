@@ -25,9 +25,13 @@ func (*Server) Run() error {
 	task_repository := repositories.NewTaskRepository(db)
 	task_controller := controllers.NewTaskController(task_repository)
 
+	project_repository := repositories.NewProjectRepository(db)
+	project_controller := controllers.NewProjectController(project_repository)
+
 	api := r.Group("/api")
 	{
 		task_controller.TaskAPI(api)
+		project_controller.ProjectAPI(api)
 	}
 
 	r.GET("/ws", func(c *gin.Context) {
