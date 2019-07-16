@@ -6,7 +6,7 @@ import (
 )
 
 func NewDB() (*sqlx.DB, error) {
-	db, err := sqlx.Open("mysql", "root@/gantt_taro")
+	db, err := sqlx.Open("mysql", "root:password@(db:3306)/gantt_taro")
 	if err != nil {
 		return nil, err
 	}

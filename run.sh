@@ -1,1 +1,0 @@
-watchexec -e go -r go run *.go

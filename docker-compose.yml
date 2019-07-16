@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  api:
+    build: .
+    tty: true
+    volumes:
+      - .:/src
+    ports:
+      - 8080:8080
+
+  db:
+    image: mysql:8.0.16
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: root
+    ports:
+      - "3306:3306"
