@@ -9,6 +9,9 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'gantt-taro front dev' }
     ],
+    script: [
+      { src: 'https://cdn.auth0.com/js/auth0-spa-js/1.1.0/auth0-spa-js.production.js' }
+    ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]

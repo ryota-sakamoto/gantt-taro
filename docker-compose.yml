@@ -10,6 +10,14 @@ services:
     ports:
       - 8080:8080
 
+  frontend:
+    build:
+      context: ./gantt-taro-frontend
+    volumes:
+      - ./gantt-taro-frontend:/src
+    ports:
+      - 3000:3000
+
   db:
     image: mysql:8.0.16
     environment:

@@ -4,3 +4,5 @@ RUN apt-get update -y && \
     npm i vue-cli eslint -g
 ENV NUXT_HOST 0.0.0.0
 WORKDIR /src
+
+CMD ["npm", "run", "dev"]
