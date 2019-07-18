@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"log"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/ryota-sakamoto/gantt-taro/repositories"
 )
@@ -15,6 +18,27 @@ func NewUserController(p repositories.UserRepository) *UserController {
 	}
 }
 
-func (p UserController) UserAPI(api *gin.RouterGroup) {
+func (u *UserController) UserAPI(api *gin.RouterGroup) {
+	api.GET("/user/:id", u.findByID)
+	api.POST("/user", u.register)
+}
+
+func (u *UserController) findByID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	user, err := u.userRepository.FindByID(id)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	c.JSON(200, user)
+}
+
+func (u *UserController) register(c *gin.Context) {
 
 }
