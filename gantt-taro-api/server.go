@@ -22,6 +22,9 @@ func (*Server) Run() error {
 	}
 	defer db.Close()
 
+	user_repository := repositories.NewUserRepository(db)
+	user_controller := controllers.NewUserController(user_repository)
+
 	task_repository := repositories.NewTaskRepository(db)
 	task_controller := controllers.NewTaskController(task_repository)
 
@@ -30,6 +33,7 @@ func (*Server) Run() error {
 
 	api := r.Group("/api")
 	{
+		user_controller.UserAPI(api)
 		task_controller.TaskAPI(api)
 		project_controller.ProjectAPI(api)
 	}
