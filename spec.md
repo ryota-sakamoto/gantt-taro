@@ -4,6 +4,7 @@ gantt-taro table spec
 ## users
 - id
 - name
+- email
 
 ## projects
 - id
