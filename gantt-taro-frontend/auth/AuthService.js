@@ -22,7 +22,9 @@ export default class AuthService {
     }
 
     logout() {
-        this.auth.logout()
+        this.auth.logout({
+            returnTo: `${window.location.origin}`
+        })
     }
 
     async isAuthenticated() {
@@ -30,8 +32,6 @@ export default class AuthService {
     }
 
     async getUser() {
-        return await this.auth.getUser({
-            returnTo: `${window.location.origin}`
-        })
+        return await this.auth.getUser()
     }
 }

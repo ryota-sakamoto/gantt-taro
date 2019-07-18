@@ -4,6 +4,8 @@
 </template>
 
 <script>
+/* eslint no-console: 0 */
+
 import AuthService from "~/auth/AuthService.js";
 
 export default {
@@ -16,7 +18,12 @@ export default {
         this.auth = new AuthService()
         await this.auth.init()
 
-        this.auth.callback()
+        const query = location.search
+        if (query.includes("code=") && query.includes("state=")) {
+            this.auth.callback()
+
+            this.$router.push({ name: "index" })
+        }
     },
 }
 </script>
