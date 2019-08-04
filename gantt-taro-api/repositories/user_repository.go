@@ -7,6 +7,10 @@ import (
 	"github.com/ryota-sakamoto/gantt-taro/models"
 )
 
+var (
+	userNotFoundError = errors.New("user is not found")
+)
+
 type UserRepository interface {
 	FindByID(int) (*models.User, error)
 	Register(*models.User) error
@@ -30,7 +34,7 @@ func (u userRepositoryImpl) FindByID(id int) (*models.User, error) {
 		return nil, err
 	}
 	if len(users) == 0 {
-		return nil, errors.New("USER_NOT_FOUND")
+		return nil, userNotFoundError
 	}
 
 	return &users[0], nil
