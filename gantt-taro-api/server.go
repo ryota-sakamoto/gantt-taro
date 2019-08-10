@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
 
-	"github.com/ryota-sakamoto/gantt-taro/config"
 	"github.com/ryota-sakamoto/gantt-taro/controllers"
+	"github.com/ryota-sakamoto/gantt-taro/db"
 	"github.com/ryota-sakamoto/gantt-taro/repositories"
 )
 
@@ -16,7 +16,7 @@ func (*Server) Run() error {
 	r := gin.Default()
 	m := melody.New()
 
-	db, err := config.NewDB()
+	db, err := db.NewDB()
 	if err != nil {
 		panic(err)
 	}
