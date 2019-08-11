@@ -1,6 +1,5 @@
 <template>
-<div class="container">
-  <auth />
+<div>
   <bar-item v-for="i in 3" :key="i" style="margin-bottom: 10px" />
 </div>
 </template>
@@ -16,11 +15,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.container {
-  background-color: whitesmoke;
-  height: 100%;
-}
-</style>
-

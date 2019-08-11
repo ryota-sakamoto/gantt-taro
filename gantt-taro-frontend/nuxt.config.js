@@ -13,9 +13,13 @@ module.exports = {
       { src: 'https://cdn.auth0.com/js/auth0-spa-js/1.1.0/auth0-spa-js.production.js' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
     ]
   },
+  modules: [
+    '@nuxtjs/vuetify'
+  ],
   mode: 'spa',
   /*
   ** Customize the progress bar color
