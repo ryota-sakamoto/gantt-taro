@@ -16,7 +16,8 @@ func (*Server) Run() error {
 	r := gin.Default()
 	m := melody.New()
 
-	db, err := db.NewDB()
+	config := db.NewDBConfig()
+	db, err := db.NewDB(config)
 	if err != nil {
 		panic(err)
 	}
