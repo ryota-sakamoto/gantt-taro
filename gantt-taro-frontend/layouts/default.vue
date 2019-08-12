@@ -99,9 +99,13 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn text>
+        <v-btn text @click="login" v-if="!is_login">
           <v-icon left dark>power_settings_new</v-icon>
           Login
+        </v-btn>
+        <v-btn text @click="logout" v-if="is_login">
+          <v-icon left dark>exit_to_app</v-icon>
+          Logout
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -116,17 +120,27 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      source: String,
-    },
+export default {
     data: () => ({
-      dialog: false,
-      drawer: null,
-      items: [
-        { icon: 'ballot', text: 'Tasks' },
-        { icon: 'settings', text: 'Settings' },
-      ],
+        dialog: false,
+        drawer: null,
+        items: [
+          { icon: 'ballot', text: 'Tasks' },
+          { icon: 'settings', text: 'Settings' },
+        ],
+
+        is_login: false,
     }),
-  }
+    async created() {
+        this.is_login = this.$store.getters.is_login
+    },
+    methods: {
+        login() {
+            this.$store.commit('login')
+        },
+        logout() {
+            this.$store.commit('logout')
+        }
+    }
+}
 </script>

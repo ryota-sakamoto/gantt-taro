@@ -5,12 +5,10 @@
 </template>
 
 <script>
-import Auth from "~/components/Auth.vue";
 import BarItem from "~/components/BarItem.vue";
 
 export default {
   components: {
-    Auth,
     BarItem,
   }
 }

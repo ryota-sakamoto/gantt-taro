@@ -18,7 +18,8 @@ module.exports = {
     ]
   },
   modules: [
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    'nuxt-client-init-module'
   ],
   mode: 'spa',
   /*
