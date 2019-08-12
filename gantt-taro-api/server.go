@@ -32,6 +32,7 @@ func (*Server) Run() error {
 	project_repository := repositories.NewProjectRepository(db)
 	project_controller := controllers.NewProjectController(project_repository)
 
+	r.Use(errorMiddleware)
 	api := r.Group("/api")
 	{
 		user_controller.UserAPI(api)
@@ -50,5 +51,16 @@ func (*Server) Run() error {
 		return err
 	} else {
 		return nil
+	}
+}
+
+func errorMiddleware(c *gin.Context) {
+	c.Next()
+
+	if len(c.Errors) != 0 {
+		c.JSON(404, gin.H{
+			"message": c.Errors.JSON(),
+		})
+		c.Abort()
 	}
 }

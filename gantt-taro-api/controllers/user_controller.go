@@ -32,7 +32,7 @@ func (u *UserController) findByID(c *gin.Context) {
 
 	user, err := u.userRepository.FindByID(id)
 	if err != nil {
-		log.Println(err)
+		c.AbortWithError(404, err)
 		return
 	}
 
