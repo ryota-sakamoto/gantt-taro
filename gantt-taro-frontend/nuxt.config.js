@@ -21,6 +21,9 @@ module.exports = {
     '@nuxtjs/vuetify',
     'nuxt-client-init-module'
   ],
+  serverMiddleware: [
+    { path: '/api', handler: '~/api/index.js' },
+  ],
   mode: 'spa',
   /*
   ** Customize the progress bar color

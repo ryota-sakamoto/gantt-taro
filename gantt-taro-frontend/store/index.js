@@ -5,6 +5,8 @@ export const strict = false
 export const state = () => ({
   auth: new AuthService(),
   is_login: false,
+  user: null,
+  token: null,
 })
 
 export const mutations = {
@@ -20,9 +22,16 @@ export const actions = {
   async nuxtClientInit({ state }) {
     await state.auth.init()
     state.is_login = await state.auth.isAuthenticated()
+
+    if (state.is_login) {
+      state.user = await state.auth.getUser()
+      state.token = await state.auth.auth.getTokenSilently()
+    }
   }
 }
 
 export const getters = {
-  is_login: (state) => state.is_login
+  is_login: (state) => state.is_login,
+  user: (state) => state.auth,
+  token: (state) => state.token,
 }
