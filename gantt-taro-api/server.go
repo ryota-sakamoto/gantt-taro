@@ -7,6 +7,7 @@ import (
 	"github.com/ryota-sakamoto/gantt-taro/controllers"
 	"github.com/ryota-sakamoto/gantt-taro/db"
 	"github.com/ryota-sakamoto/gantt-taro/repositories"
+	"github.com/ryota-sakamoto/gantt-taro/utils"
 )
 
 type Server struct {
@@ -35,6 +36,8 @@ func (*Server) Run() error {
 	r.Use(errorMiddleware)
 	api := r.Group("/api")
 	{
+		api.Use(validaetMiddleware)
+
 		user_controller.UserAPI(api)
 		task_controller.TaskAPI(api)
 		project_controller.ProjectAPI(api)
@@ -62,5 +65,14 @@ func errorMiddleware(c *gin.Context) {
 			"message": c.Errors.JSON(),
 		})
 		c.Abort()
+	}
+}
+
+func validaetMiddleware(c *gin.Context) {
+	t := c.GetHeader("Authorization")
+	if t != "" && utils.ValidateToken(t) {
+		c.Next()
+	} else {
+		c.AbortWithStatus(401)
 	}
 }
