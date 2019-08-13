@@ -67,10 +67,21 @@ export default {
   },
   methods: {
     create() {
+      const f = this.tasks.every(o => o.id !== "task_new")
+      if (f) {
+        this.tasks.push({
+          id: 'task_new',
+          name: '',
+          progress: 0,
+        })
+      }
+
       this.gantt = new Gantt("#gantt", this.tasks, {
         view_mode: this.mode,
         on_click: this.open_task_edit_modal,
       })
+
+      this.gantt.bars[this.gantt.bars.length - 1].setup_click_event()
     },
     scroll_today() {
       const oldest = this.gantt.get_oldest_starting_date().getTime()
