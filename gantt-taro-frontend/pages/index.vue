@@ -1,23 +1,39 @@
 <template>
-<div>
-  <bar-item v-for="i in 3" :key="i" style="margin-bottom: 10px" />
-</div>
+<v-card
+  class="pa-2"
+  outlined
+  tile
+>
+  <gantt-chart />
+</v-card>
 </template>
 
 <script>
-import BarItem from "~/components/BarItem.vue";
-import axios from "axios";
+import GanttChart from "~/components/GanttChart.vue";
 
 export default {
   components: {
-    BarItem,
+    GanttChart,
   },
-  async asyncData() {
-    try {
-      await axios.get("/api/user/1")
-    } catch (e) {
-      console.log(e.response.data.message)
+  data() {
+    return {
+      tasks: [
+        {
+          id: 'task_a',
+          start: '2019-08-03',
+          end: '2019-08-09',
+          name: '',
+          progress: 0
+        },
+        {
+          start: '2019-08-05',
+          end: '2019-08-23',
+          name: '',
+          progress: 0,
+          dependencies: 'task_a',
+        }
+      ]
     }
-  }
+  },
 }
 </script>
