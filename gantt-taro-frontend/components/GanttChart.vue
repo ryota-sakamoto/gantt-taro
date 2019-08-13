@@ -10,6 +10,8 @@ export default {
   props: {
     mode: String,
   },
+  components: {
+  },
   data() {
     return {
       gantt: null,
@@ -67,6 +69,7 @@ export default {
     create() {
       this.gantt = new Gantt("#gantt", this.tasks, {
         view_mode: this.mode,
+        on_click: this.open_task_edit_modal,
       })
     },
     scroll_today() {
@@ -75,6 +78,9 @@ export default {
 
       this.gantt.gantt_start = new Date(this.gantt.gantt_start.getTime() - t)
       this.gantt.set_scroll_position()
+    },
+    open_task_edit_modal(task) {
+      this.$emit('open-task-edit-modal', task)
     }
   },
   watch: {
@@ -87,6 +93,6 @@ export default {
 
 <style>
 .popup-wrapper {
-  /* display: none; */
+  display: none;
 }
 </style>
