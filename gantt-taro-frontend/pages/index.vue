@@ -1,38 +1,26 @@
 <template>
 <v-card
-  class="pa-2"
-  outlined
-  tile
+    class="pa-2"
+    outlined
+    tile
 >
-  <gantt-chart />
+  <chart-options @change-mode="d => mode = d" />
+  <gantt-chart :mode="mode" />
 </v-card>
 </template>
 
 <script>
 import GanttChart from "~/components/GanttChart.vue";
+import ChartOptions from "~/components/chart/ChartOptions.vue";
 
 export default {
   components: {
     GanttChart,
+    ChartOptions,
   },
   data() {
     return {
-      tasks: [
-        {
-          id: 'task_a',
-          start: '2019-08-03',
-          end: '2019-08-09',
-          name: '',
-          progress: 0
-        },
-        {
-          start: '2019-08-05',
-          end: '2019-08-23',
-          name: '',
-          progress: 0,
-          dependencies: 'task_a',
-        }
-      ]
+      mode: "Day",
     }
   },
 }
