@@ -6,7 +6,7 @@ export const state = () => ({
   auth: new AuthService(),
   is_login: false,
   user: null,
-  token: null,
+  token: ''
 })
 
 export const mutations = {

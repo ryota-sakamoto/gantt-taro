@@ -10,6 +10,7 @@ export default class AuthService {
             domain: '',
             client_id: '',
             redirect_uri: `${window.location.origin}/callback`,
+            audience: ''
         });
     }
 
