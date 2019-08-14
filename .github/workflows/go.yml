@@ -19,6 +19,8 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
+      working-directory: ./gantt-taro-api
 
     - name: Build
       run: go build -v .
+      working-directory: ./gantt-taro-api
