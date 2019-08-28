@@ -2,16 +2,16 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/ryota-sakamoto/gantt-taro/repositories"
+	"github.com/ryota-sakamoto/gantt-taro/services"
 )
 
 type ProjectController struct {
-	projectRepository repositories.ProjectRepository
+	projectService services.ProjectService
 }
 
-func NewProjectController(p repositories.ProjectRepository) *ProjectController {
+func NewProjectController(p services.ProjectService) *ProjectController {
 	return &ProjectController{
-		projectRepository: p,
+		projectService: p,
 	}
 }
 

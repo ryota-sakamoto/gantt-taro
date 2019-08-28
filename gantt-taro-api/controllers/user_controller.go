@@ -5,16 +5,16 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ryota-sakamoto/gantt-taro/repositories"
+	"github.com/ryota-sakamoto/gantt-taro/services"
 )
 
 type UserController struct {
-	userRepository repositories.UserRepository
+	userService services.UserService
 }
 
-func NewUserController(p repositories.UserRepository) *UserController {
+func NewUserController(p services.UserService) *UserController {
 	return &UserController{
-		userRepository: p,
+		userService: p,
 	}
 }
 
@@ -30,7 +30,7 @@ func (u *UserController) findByID(c *gin.Context) {
 		return
 	}
 
-	user, err := u.userRepository.FindByID(id)
+	user, err := u.userService.FindByID(id)
 	if err != nil {
 		c.AbortWithError(404, err)
 		return

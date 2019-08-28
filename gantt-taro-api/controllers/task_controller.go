@@ -2,16 +2,16 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/ryota-sakamoto/gantt-taro/repositories"
+	"github.com/ryota-sakamoto/gantt-taro/services"
 )
 
 type TaskController struct {
-	taskRepository repositories.TaskRepository
+	taskService services.TaskService
 }
 
-func NewTaskController(t repositories.TaskRepository) *TaskController {
+func NewTaskController(t services.TaskService) *TaskController {
 	return &TaskController{
-		taskRepository: t,
+		taskService: t,
 	}
 }
 
@@ -22,7 +22,7 @@ func (t *TaskController) TaskAPI(api *gin.RouterGroup) {
 
 func (t *TaskController) getTask(c *gin.Context) {
 	id := c.GetInt("id")
-	if task, err := t.taskRepository.Get(id); err != nil {
+	if task, err := t.taskService.Get(id); err != nil {
 		panic(err)
 	} else {
 		c.JSON(200, task)

@@ -7,6 +7,7 @@ import (
 	"github.com/ryota-sakamoto/gantt-taro/controllers"
 	"github.com/ryota-sakamoto/gantt-taro/db"
 	"github.com/ryota-sakamoto/gantt-taro/repositories"
+	"github.com/ryota-sakamoto/gantt-taro/services"
 	"github.com/ryota-sakamoto/gantt-taro/utils"
 )
 
@@ -25,13 +26,16 @@ func (*Server) Run() error {
 	defer db.Close()
 
 	user_repository := repositories.NewUserRepository(db)
-	user_controller := controllers.NewUserController(user_repository)
+	user_service := services.NewUserService(user_repository)
+	user_controller := controllers.NewUserController(user_service)
 
 	task_repository := repositories.NewTaskRepository(db)
-	task_controller := controllers.NewTaskController(task_repository)
+	task_service := services.NewTaskService(task_repository)
+	task_controller := controllers.NewTaskController(task_service)
 
 	project_repository := repositories.NewProjectRepository(db)
-	project_controller := controllers.NewProjectController(project_repository)
+	project_service := services.NewProjectService(project_repository)
+	project_controller := controllers.NewProjectController(project_service)
 
 	r.Use(errorMiddleware)
 	api := r.Group("/api")

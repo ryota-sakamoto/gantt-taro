@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 var (
