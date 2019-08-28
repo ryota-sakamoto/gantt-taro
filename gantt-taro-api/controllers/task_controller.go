@@ -16,7 +16,7 @@ func NewTaskController(t services.TaskService) *TaskController {
 }
 
 func (t *TaskController) TaskAPI(api *gin.RouterGroup) {
-	api.GET("/task/:id", t.getTask)
+	api.GET("/tasks/:id", t.getTask)
 	api.GET("/tasks", t.getAllTasks)
 }
 

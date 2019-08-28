@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
 
@@ -25,6 +27,11 @@ func (*Server) Run() error {
 	}
 	defer db.Close()
 
+	app_env := os.Getenv("APP_ENV")
+	if app_env == "" {
+		app_env = "development"
+	}
+
 	user_repository := repositories.NewUserRepository(db)
 	user_service := services.NewUserService(user_repository)
 	user_controller := controllers.NewUserController(user_service)
@@ -38,9 +45,11 @@ func (*Server) Run() error {
 	project_controller := controllers.NewProjectController(project_service)
 
 	r.Use(errorMiddleware)
-	api := r.Group("/api")
+	api := r.Group("/api/v1")
 	{
-		api.Use(validaetMiddleware)
+		if app_env != "development_skip_auth" {
+			api.Use(validaetMiddleware)
+		}
 
 		user_controller.UserAPI(api)
 		task_controller.TaskAPI(api)

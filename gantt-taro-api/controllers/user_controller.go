@@ -19,8 +19,8 @@ func NewUserController(p services.UserService) *UserController {
 }
 
 func (u *UserController) UserAPI(api *gin.RouterGroup) {
-	api.GET("/user/:id", u.findByID)
-	api.POST("/user", u.register)
+	api.GET("/users/:id", u.findByID)
+	api.POST("/users", u.register)
 }
 
 func (u *UserController) findByID(c *gin.Context) {
