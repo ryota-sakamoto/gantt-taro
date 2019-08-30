@@ -27,7 +27,11 @@ func parsePublicKey() interface{} {
 	return publicKey.PublicKey
 }
 
-func ValidateToken(t string) bool {
+type Claims struct {
+	UniqueId string
+}
+
+func ValidateToken(t string) (*Claims, error) {
 	if publicKey == nil {
 		publicKey = parsePublicKey()
 	}
@@ -41,16 +45,21 @@ func ValidateToken(t string) bool {
 	})
 
 	if err != nil {
-		log.Printf("[ERROR] %+v", err)
-		return false
+		return nil, err
 	}
 
 	if !token.Valid {
-		log.Println("[ERROR] token is invalid")
-		return false
+		return nil, errors.New("token is invalid")
 	}
 
-	log.Printf("[INFO] %+v", token.Claims)
+	m, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errors.New("claims error")
+	}
 
-	return true
+	c := Claims{
+		UniqueId: m["sub"].(string),
+	}
+
+	return &c, nil
 }

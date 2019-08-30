@@ -20,7 +20,6 @@ func NewUserController(p services.UserService) *UserController {
 
 func (u *UserController) UserAPI(api *gin.RouterGroup) {
 	api.GET("/users/:id", u.findByID)
-	api.POST("/users", u.register)
 }
 
 func (u *UserController) findByID(c *gin.Context) {
@@ -37,8 +36,4 @@ func (u *UserController) findByID(c *gin.Context) {
 	}
 
 	c.JSON(200, user)
-}
-
-func (u *UserController) register(c *gin.Context) {
-
 }

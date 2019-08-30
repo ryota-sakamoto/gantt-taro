@@ -27,33 +27,36 @@ func (*Server) Run() error {
 	}
 	defer db.Close()
 
-	app_env := os.Getenv("APP_ENV")
-	if app_env == "" {
-		app_env = "development"
+	appEnv := os.Getenv("APP_ENV")
+	if appEnv == "" {
+		appEnv = "development"
 	}
 
-	user_repository := repositories.NewUserRepository(db)
-	user_service := services.NewUserService(user_repository)
-	user_controller := controllers.NewUserController(user_service)
+	userRepository := repositories.NewUserRepository(db)
+	userService := services.NewUserService(userRepository)
+	userController := controllers.NewUserController(userService)
 
-	task_repository := repositories.NewTaskRepository(db)
-	task_service := services.NewTaskService(task_repository)
-	task_controller := controllers.NewTaskController(task_service)
+	taskRepository := repositories.NewTaskRepository(db)
+	taskService := services.NewTaskService(taskRepository)
+	taskController := controllers.NewTaskController(taskService)
 
-	project_repository := repositories.NewProjectRepository(db)
-	project_service := services.NewProjectService(project_repository)
-	project_controller := controllers.NewProjectController(project_service)
+	projectRepository := repositories.NewProjectRepository(db)
+	projectService := services.NewProjectService(projectRepository)
+	projectController := controllers.NewProjectController(projectService)
+
+	authenticationController := controllers.NewAuthenticationController(userService)
 
 	r.Use(errorMiddleware)
 	api := r.Group("/api/v1")
 	{
-		if app_env != "development_skip_auth" {
+		if appEnv != "development_skip_auth" {
 			api.Use(validaetMiddleware)
 		}
 
-		user_controller.UserAPI(api)
-		task_controller.TaskAPI(api)
-		project_controller.ProjectAPI(api)
+		authenticationController.AuthenticationAPI(api)
+		userController.UserAPI(api)
+		taskController.TaskAPI(api)
+		projectController.ProjectAPI(api)
 	}
 
 	r.GET("/ws", func(c *gin.Context) {
@@ -83,7 +86,9 @@ func errorMiddleware(c *gin.Context) {
 
 func validaetMiddleware(c *gin.Context) {
 	t := c.GetHeader("Authorization")
-	if t != "" && utils.ValidateToken(t) {
+	claims, err := utils.ValidateToken(t)
+	if err == nil {
+		c.Set("user", claims)
 		c.Next()
 	} else {
 		c.AbortWithStatus(401)

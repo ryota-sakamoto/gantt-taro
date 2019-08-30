@@ -8,11 +8,12 @@ import (
 )
 
 var (
-	userNotFoundError = errors.New("user is not found")
+	UserNotFoundError = errors.New("user is not found")
 )
 
 type UserRepository interface {
 	FindByID(int) (*models.User, error)
+	FindByUniqiueId(string) (*models.User, error)
 	Register(*models.User) error
 }
 
@@ -27,19 +28,31 @@ type userRepositoryImpl struct {
 }
 
 func (u userRepositoryImpl) FindByID(id int) (*models.User, error) {
+	return u.findUserWithQuery("SELECT id, unique_id FROM users where id = ?", id)
+}
+
+func (u userRepositoryImpl) FindByUniqiueId(id string) (*models.User, error) {
+	return u.findUserWithQuery("SELECT id, unique_id FROM users where unique_id = ?", id)
+}
+
+func (u userRepositoryImpl) Register(user *models.User) error {
+	_, err := u.db.Exec("INSERT INTO users(unique_id) VALUE(?)", user.UniqueId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u userRepositoryImpl) findUserWithQuery(query string, args ...interface{}) (*models.User, error) {
 	users := []models.User{}
 
-	err := u.db.Select(&users, "SELECT id, name FROM users where id = ?", id)
+	err := u.db.Select(&users, query, args...)
 	if err != nil {
 		return nil, err
 	}
 	if len(users) == 0 {
-		return nil, userNotFoundError
+		return nil, UserNotFoundError
 	}
 
 	return &users[0], nil
-}
-
-func (u userRepositoryImpl) Register(user *models.User) error {
-	return nil
 }
