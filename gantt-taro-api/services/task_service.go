@@ -6,7 +6,8 @@ import (
 )
 
 type TaskService interface {
-	Get(int) (*models.Task, error)
+	FindById(int) (*models.Task, error)
+	GetAllTasks() ([]models.Task, error)
 }
 
 type taskServiceImpl struct {
@@ -19,6 +20,10 @@ func NewTaskService(r repositories.TaskRepository) TaskService {
 	}
 }
 
-func (t taskServiceImpl) Get(id int) (*models.Task, error) {
-	return t.taskRepository.Get(id)
+func (t taskServiceImpl) FindById(id int) (*models.Task, error) {
+	return t.taskRepository.FindById(id)
+}
+
+func (t taskServiceImpl) GetAllTasks() ([]models.Task, error) {
+	return t.taskRepository.GetAllTasks()
 }
