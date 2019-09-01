@@ -8,6 +8,7 @@ import (
 type TaskService interface {
 	FindById(int) (*models.Task, error)
 	GetAllTasks() ([]models.Task, error)
+	Update(*models.Task) error
 }
 
 type taskServiceImpl struct {
@@ -26,4 +27,13 @@ func (t taskServiceImpl) FindById(id int) (*models.Task, error) {
 
 func (t taskServiceImpl) GetAllTasks() ([]models.Task, error) {
 	return t.taskRepository.GetAllTasks()
+}
+
+func (t taskServiceImpl) Update(task *models.Task) error {
+	_, err := t.taskRepository.FindById(task.Id)
+	if err != nil {
+		return err
+	}
+
+	return t.taskRepository.Update(task)
 }

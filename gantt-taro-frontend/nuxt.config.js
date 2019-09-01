@@ -19,11 +19,14 @@ module.exports = {
   },
   modules: [
     '@nuxtjs/vuetify',
-    'nuxt-client-init-module'
+    'nuxt-client-init-module',
+    '@nuxtjs/proxy'
   ],
-  serverMiddleware: [
-    { path: '/api', handler: '~/api/index.js' },
-  ],
+  proxy: {
+    '/api': {
+      target: 'http://api:8080',
+    }
+  },
   mode: 'spa',
   /*
   ** Customize the progress bar color

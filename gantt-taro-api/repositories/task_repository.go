@@ -15,6 +15,7 @@ type TaskRepository interface {
 	FindById(int) (*models.Task, error)
 	GetAllTasks() ([]models.Task, error)
 	Save(*models.Task) error
+	Update(*models.Task) error
 }
 
 func NewTaskRepository(db *sqlx.DB) TaskRepository {
@@ -53,4 +54,11 @@ func (t taskRepositoryImpl) GetAllTasks() ([]models.Task, error) {
 
 func (taskRepositoryImpl) Save(task *models.Task) error {
 	return nil
+}
+
+func (t taskRepositoryImpl) Update(task *models.Task) error {
+	_, err := t.db.Exec("UPDATE tasks SET name = ?, started_at = ?, ended_at = ? WHERE id = ?",
+		task.Name, task.StartedAt.ToTime(), task.EndedAt.ToTime(), task.Id)
+
+	return err
 }

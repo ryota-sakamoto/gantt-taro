@@ -8,7 +8,7 @@ import (
 )
 
 func NewDB(config *Config) (*sqlx.DB, error) {
-	db, err := sqlx.Open("mysql", fmt.Sprintf("%s:%s@(%s:3306)/gantt_taro", config.User, config.Password, config.Host))
+	db, err := sqlx.Open("mysql", fmt.Sprintf("%s:%s@(%s:3306)/gantt_taro?parseTime=true", config.User, config.Password, config.Host))
 
 	return db, err
 }

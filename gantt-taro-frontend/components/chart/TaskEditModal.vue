@@ -12,14 +12,14 @@
                 <v-text-field
                   label="Task Name*"
                   required
-                  v-model="task.name"
+                  v-model="name"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <task-edit-date-picker label="Start Date" :date="task.start" />
+                <task-edit-date-picker label="Start Date" :date="start" @update-date="v => start = v" />
               </v-col>
               <v-col cols="12" sm="6">
-                <task-edit-date-picker label="End Date" :date="task.end" />
+                <task-edit-date-picker label="End Date" :date="end" @update-date="v => end = v" />
               </v-col>
             </v-row>
           </v-container>
@@ -28,7 +28,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="close_modal">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="close_modal">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="update_task">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -46,9 +46,34 @@ export default {
     dialog: Boolean,
     task: Object,
   },
+  data() {
+    return {
+      id: undefined,
+      name: undefined,
+      start: undefined,
+      end: undefined,
+    }
+  },
   methods: {
+    update_task() {
+      this.$emit('update-task', {
+        id: this.id,
+        name: this.name,
+        start: this.start,
+        end: this.end,
+      })
+      this.close_modal()
+    },
     close_modal() {
       this.$emit('close-modal')
+    }
+  },
+  watch: {
+    dialog() {
+      this.id = this.task.id
+      this.name = this.task.name
+      this.start = this.task.start
+      this.end = this.task.end
     }
   }
 }

@@ -10,13 +10,14 @@ import Gantt from "frappe-gantt";
 export default {
   props: {
     mode: String,
+    update_task: Object,
   },
   components: {
   },
   data() {
     return {
       gantt: null,
-      tasks: []
+      tasks: [],
     }
   },
   async mounted() {
@@ -26,6 +27,20 @@ export default {
     this.scroll_today()
   },
   methods: {
+    async _update_task() {  
+      const id = Number(this.update_task.id.replace("task_", ""))
+
+      await axios.post(`/api/v1/tasks/${id}`, {
+        name: this.update_task.name,
+        started_at: this.update_task.start,
+        ended_at: this.update_task.end,
+      },
+      {
+        headers: {
+          "Authorization": `${this.$store.getters.token}`
+        },
+      })
+    },
     async get_all_tasks() {
       const res = await axios.get("/api/v1/tasks", {
         headers: {
@@ -74,6 +89,9 @@ export default {
   watch: {
     mode() {
       this.create()
+    },
+    update_task() {
+      this._update_task()
     }
   }
 }

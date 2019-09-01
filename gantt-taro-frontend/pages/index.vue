@@ -5,8 +5,8 @@
     tile
 >
   <chart-options @change-mode="d => mode = d" />
-  <gantt-chart :mode="mode" @open-task-edit-modal="open_modal" />
-  <task-edit-modal :dialog="is_show_modal" :task="task" @close-modal="is_show_modal = false" />
+  <gantt-chart :mode="mode" @open-task-edit-modal="open_modal" :update_task="update_task" />
+  <task-edit-modal :dialog="is_show_modal" :task="task" @update-task="update" @close-modal="is_show_modal = false" />
 </v-card>
 </template>
 
@@ -25,13 +25,17 @@ export default {
     return {
       mode: "Day",
       is_show_modal: false,
-      task: {}
+      task: {},
+      update_task: undefined,
     }
   },
   methods: {
     open_modal(task) {
-      this.is_show_modal = true
       this.task = task
+      this.is_show_modal = true
+    },
+    update(task) {
+      this.update_task = task
     }
   }
 }

@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ryota-sakamoto/gantt-taro/models"
 	"github.com/ryota-sakamoto/gantt-taro/repositories"
 	"github.com/ryota-sakamoto/gantt-taro/services"
 )
@@ -19,22 +21,21 @@ func NewTaskController(t services.TaskService) *TaskController {
 }
 
 func (t *TaskController) TaskAPI(api *gin.RouterGroup) {
-	api.GET("/tasks/:id", t.getTask)
 	api.GET("/tasks", t.getAllTasks)
+	api.GET("/tasks/:id", t.getTask)
+	api.POST("/tasks/:id", t.updateTask)
 }
 
 func (t *TaskController) getTask(c *gin.Context) {
 	id := c.GetInt("id")
-	if task, err := t.taskService.FindById(id); err != nil {
-		if err == repositories.TaskNotFoundError {
-			c.AbortWithStatus(404)
-		} else {
-			log.Println(err)
-			c.AbortWithStatus(500)
-		}
-	} else {
-		c.JSON(200, task)
+
+	task, err := t.taskService.FindById(id)
+	if err != nil {
+		handleTaskError(c, err)
+		return
 	}
+
+	c.JSON(200, task)
 }
 
 func (t *TaskController) getAllTasks(c *gin.Context) {
@@ -46,4 +47,37 @@ func (t *TaskController) getAllTasks(c *gin.Context) {
 	}
 
 	c.JSON(200, tasks)
+}
+
+func (t *TaskController) updateTask(c *gin.Context) {
+	var task models.Task
+	err := c.Bind(&task)
+	if err != nil {
+		handleTaskError(c, err)
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		handleTaskError(c, err)
+		return
+	}
+
+	task.Id = id
+
+	err = t.taskService.Update(&task)
+	if err != nil {
+		handleTaskError(c, err)
+		return
+	}
+
+	c.Status(200)
+}
+
+func handleTaskError(c *gin.Context, err error) {
+	if err == repositories.TaskNotFoundError {
+		c.AbortWithStatus(404)
+	} else {
+		c.AbortWithStatus(500)
+	}
 }
